@@ -75,6 +75,8 @@ def create_data(data: {}):
     global tui_width
     global data_rendered
 
+    data_rendered = []
+
     for key, entry in data.items():
         converted_entry = f"{key}: {entry}"
         current_data_len = len(converted_entry)
