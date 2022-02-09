@@ -123,8 +123,6 @@ def select_next():
 
     if selected_index < len(options_list) - 1:
         selected_index = selected_index + 1
-    else:
-        selected_index = 0
 
     _local_render()
 
@@ -135,8 +133,6 @@ def select_prev():
 
     if selected_index > 0:
         selected_index = selected_index - 1
-    else:
-        selected_index = len(options_list) - 1
 
     _local_render()
 

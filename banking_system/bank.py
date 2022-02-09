@@ -1,5 +1,8 @@
 import Xlib
+import os
 from pynput import keyboard
+
+import account_manager
 from tui_engine import render, \
                        execute_selection,\
                        select_next,\
@@ -11,9 +14,35 @@ title = ""
 info = {}
 options = {}
 
+acc = None
+
+in_main_menu = True
+
 
 def login():
-    print("Logging in")
+    global info
+    global options
+    global acc
+
+    os.system("clear")
+
+    options = {"Transfer Money": transfer_money,
+               "Log out": log_out}
+
+    username = input("Username: ")
+    pwd = input("Password: ")
+
+    acc = account_manager.login_account(username, pwd)
+    info = acc.data
+
+
+def transfer_money():
+    if not acc:
+        return
+
+
+def log_out():
+    pass
 
 
 def quit_bank():
@@ -26,14 +55,15 @@ def load_main_manu():
     global options
 
     title = "FN Bank"
-    info = {"Info": "Use arrow keys to navigate",
+    info = {"Info": "Use arrow keys to navigate, select with space",
             "Account": "Currently not logged in"}
+
     options = {"Login": login,
                "Quit": quit_bank}
 
 
 def on_press(key):
-    if key == keyboard.Key.enter:
+    if key == keyboard.Key.space:
         execute_selection()
 
     if key == keyboard.Key.down:
