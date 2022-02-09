@@ -25,8 +25,7 @@ def login():
     global acc
 
     os.system("clear")
-
-    info = {}
+ 
     options = {"Transfer Money": transfer_money,
                "Log out": log_out}
 
