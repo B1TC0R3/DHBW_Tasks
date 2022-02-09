@@ -37,14 +37,14 @@ class Account:
             raise RecipientNotFoundException()
 
         self.data["balance"] -= amount
-        self.data["transactions"].append(f"-{amount}$ to {recipient}")
+        self.data["transactions"].append(f"\n\t-{amount}$ to {recipient}")
 
         with open(f"{acc_dir()}/{recipient}.json", "r") as recipient_file:
             recipient_acc = Account(None, None)
             recipient_acc.data = json.load(recipient_file)
 
             recipient_acc.data["balance"] += amount
-            recipient_acc.data["transactions"].append(f"+{amount}$ from {self.data['name']}")
+            recipient_acc.data["transactions"].append(f"\n\t+{amount}$ from {self.data['name']}")
 
         with open(f"{acc_dir()}/{recipient}.json", "w") as recipient_file:
             json.dump(recipient_acc.data, recipient_file)

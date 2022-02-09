@@ -1,7 +1,5 @@
 import Xlib
-import os
 from pynput import keyboard
-from account import Account
 from account_manager import *
 from exceptions import InvalidLoginException
 from tui_engine import render, \
@@ -20,10 +18,30 @@ acc = None
 in_main_menu = True
 
 
-def get_input(message: str) -> str:
+def formatted_input(message: str) -> str:
     return input(message).replace("\x1b[A", "")\
                          .replace("\x1b[B", "")\
                          .strip()
+
+
+def create_acc():
+    global acc
+
+    os.system("clear")
+
+    username = formatted_input("Username (No spaces): ")
+    pwd = formatted_input("Password (No spaces): ")
+
+    create_account(username, pwd)
+
+    try:
+        acc = login_account(username, pwd)
+    except InvalidLoginException:
+        log_out()
+        return
+
+    load_account()
+    render(title, info, options)
 
 
 def login():
@@ -33,8 +51,8 @@ def login():
 
     os.system("clear")
 
-    username = get_input("Username: ")
-    pwd = get_input("Password: ")
+    username = formatted_input("Username: ")
+    pwd = formatted_input("Password: ")
 
     try:
         acc = login_account(username, pwd)
@@ -55,12 +73,12 @@ def transfer_money():
 
     os.system("clear")
 
-    recipient = get_input("Recipient: ")
-    amount = get_input("Amount: ")
+    recipient = formatted_input("Recipient: ")
+    amount = formatted_input("Amount: ")
 
     try:
         acc.transfer(float(amount), recipient)
-    except ValueError: 
+    except ValueError:
         pass
 
     info = acc.data
@@ -113,6 +131,7 @@ def load_main_manu():
             "Account": "Currently not logged in"}
 
     options = {"Login": login,
+               "Create Account": create_acc,
                "Quit": quit_bank}
 
 
