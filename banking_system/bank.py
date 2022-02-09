@@ -26,14 +26,19 @@ def login():
 
     os.system("clear")
 
+    info = {}
     options = {"Transfer Money": transfer_money,
                "Log out": log_out}
 
-    username = input("Username: ")
-    pwd = input("Password: ")
+    username = input("Username: ").replace("\x1b[A", "")\
+                                  .replace("\x1b[B", "")\
+                                  .strip()
+    pwd = input("Password: ").strip()
 
     acc = account_manager.login_account(username, pwd)
     info = acc.data
+
+    render(title, info, options)
 
 
 def transfer_money():
