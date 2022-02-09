@@ -1,8 +1,8 @@
 import Xlib
 import os
 from pynput import keyboard
-
-import account_manager
+from account import Account
+from account_manager import *
 from tui_engine import render, \
                        execute_selection,\
                        select_next,\
@@ -19,38 +19,63 @@ acc = None
 in_main_menu = True
 
 
+def get_input(message: str) -> str:
+    return input(message).replace("\x1b[A", "")\
+                         .replace("\x1b[B", "")\
+                         .strip()
+
+
 def login():
     global info
     global options
     global acc
 
     os.system("clear")
- 
-    options = {"Transfer Money": transfer_money,
-               "Log out": log_out}
 
-    username = input("Username: ").replace("\x1b[A", "")\
-                                  .replace("\x1b[B", "")\
-                                  .strip()
-    pwd = input("Password: ").strip()
+    username = get_input("Username: ")
+    pwd = get_input("Password: ")
 
-    acc = account_manager.login_account(username, pwd)
-    info = acc.data
+    acc = login_account(username, pwd)
+    load_account(acc)
 
     render(title, info, options)
-
+ 
 
 def transfer_money():
     if not acc:
         return
 
+    os.system("clear")
+
+    recipient = get_input("Recipient: ")
+    amount = get_input("Amount: ")
+
+    try:
+        acc.transfer(int(amount), recipient)
+    except ValueError:
+        return
+
 
 def log_out():
-    pass
+    global acc
+    global title
+    global info
+    global options
+
+    acc = None
+    load_main_manu()
+    render(title, info, options)
 
 
 def quit_bank():
     exit(0)
+
+
+def load_account(acc: Account):
+    global options
+
+    options = {"Transfer Money": transfer_money,
+               "Log out": log_out}
 
 
 def load_main_manu():
