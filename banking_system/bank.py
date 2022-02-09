@@ -1,4 +1,5 @@
 import Xlib
+from getpass import getpass
 from pynput import keyboard
 from account_manager import *
 from exceptions import InvalidLoginException
@@ -30,7 +31,7 @@ def create_acc():
     os.system("clear")
 
     username = formatted_input("Username (No spaces): ")
-    pwd = formatted_input("Password (No spaces): ")
+    pwd = getpass("Password (No spaces): ").strip()
 
     create_account(username, pwd)
 
@@ -52,7 +53,7 @@ def login():
     os.system("clear")
 
     username = formatted_input("Username: ")
-    pwd = formatted_input("Password: ")
+    pwd = getpass("Password: ").strip()
 
     try:
         acc = login_account(username, pwd)
