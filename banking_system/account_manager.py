@@ -22,8 +22,11 @@ def login_account(name: str, pwd: str) -> Account:
 
     acc = Account(name, pwd)
 
-    with open(f"{acc_dir()}/{name}.json", "r") as acc_file:
-        acc.data = json.load(acc_file)
+    try:
+        with open(f"{acc_dir()}/{name}.json", "r") as acc_file:
+            acc.data = json.load(acc_file)
+    except FileNotFoundError:
+        raise InvalidLoginException
 
     if not pwd == acc.data["pwd"]:
         raise InvalidLoginException

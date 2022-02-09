@@ -3,6 +3,7 @@ import os
 from pynput import keyboard
 from account import Account
 from account_manager import *
+from exceptions import InvalidLoginException
 from tui_engine import render, \
                        execute_selection,\
                        select_next,\
@@ -35,11 +36,16 @@ def login():
     username = get_input("Username: ")
     pwd = get_input("Password: ")
 
-    acc = login_account(username, pwd)
-    load_account(acc)
+    try:
+        acc = login_account(username, pwd)
+    except InvalidLoginException:
+        log_out()
+        return
+
+    load_account()
 
     render(title, info, options)
- 
+
 
 def transfer_money():
     if not acc:
@@ -71,11 +77,14 @@ def quit_bank():
     exit(0)
 
 
-def load_account(acc: Account):
+def load_account():
     global options
+    global info
+    global acc
 
     options = {"Transfer Money": transfer_money,
                "Log out": log_out}
+    info = acc.data
 
 
 def load_main_manu():
