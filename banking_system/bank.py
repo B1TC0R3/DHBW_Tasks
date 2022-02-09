@@ -48,6 +48,8 @@ def login():
 
 
 def transfer_money():
+    global info
+
     if not acc:
         return
 
@@ -57,9 +59,22 @@ def transfer_money():
     amount = get_input("Amount: ")
 
     try:
-        acc.transfer(int(amount), recipient)
-    except ValueError:
-        return
+        acc.transfer(float(amount), recipient)
+    except ValueError: 
+        pass
+
+    info = acc.data
+    render(title, info, options)
+
+
+def work():
+    global acc
+    global info
+
+    acc.work()
+
+    info = acc.data
+    render(title, info, options)
 
 
 def log_out():
@@ -83,6 +98,7 @@ def load_account():
     global acc
 
     options = {"Transfer Money": transfer_money,
+               "Work": work,
                "Log out": log_out}
     info = acc.data
 
