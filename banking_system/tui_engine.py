@@ -96,14 +96,12 @@ def create_options(options: {}):
 
     counter = 0
     for key, entry in options.items():
-        print(f"{counter}, {selected_index}")
 
         current_option_len = len(key)
         gap_len = tui_width - current_option_len + 1
 
         selection_char = "| "
         if selected_index == counter:
-            print(f"Adding color to {key} because {selected_index}=={counter}")
             selection_char = f"|{selection_color}→"
 
         current_line = f"{selection_char}{key}{no_color}{create_gap(gap_len)}|"
@@ -148,7 +146,6 @@ def _local_render():
 
     create_options(original_options)
     display()
-
 
 
 def render(title: str, data: {}, options: []):
