@@ -9,13 +9,13 @@ class AccountExistsException(Exception):
 
 
 class InvalidArgumentException(Exception):
-    def __init__(self):
-        super(InvalidArgumentException, self).__init__()
+    def __init__(self, msg: str):
+        super(InvalidArgumentException, self).__init__(msg)
 
 
 class BalanceToLowException(Exception):
-    def __init__(self):
-        super(BalanceToLowException, self).__init__()
+    def __init__(self, msg: str):
+        super(BalanceToLowException, self).__init__(msg)
 
 
 class InvalidTransferAmountException(Exception):
