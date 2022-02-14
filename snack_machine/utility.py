@@ -12,7 +12,7 @@ def dict_line_length(element: dict) -> int:
 
 def list_line_length(element: list):
     element_len = 0
-    for entry in element():
+    for entry in element:
         line_len = len(entry)
         element_len = max(element_len, line_len)
 
