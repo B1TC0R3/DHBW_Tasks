@@ -1,3 +1,5 @@
+#!/usr/lib/python3
+
 import os
 from utility import check_args,\
                     dict_line_length,\
