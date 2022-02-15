@@ -85,10 +85,10 @@ class TuiEngine:
         options_render = self._render_options()
         self.options_list = list(options.values())
 
-        self._display(title_render,
-                      data_render,
-                      options_render,
-                      connector)
+        _display(title_render,
+                 data_render,
+                 options_render,
+                 connector)
 
     def _render_data(self) -> str:
         data_render = ""
