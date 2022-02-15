@@ -1,5 +1,14 @@
-def main():
+from pynput import keyboard
+
+
+def on_key_press():
     pass
+
+
+def main():
+    while True:
+        with keyboard.Listener as listener:
+
 
 
 if __name__ == "__main__":
