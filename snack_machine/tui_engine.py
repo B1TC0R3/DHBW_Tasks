@@ -63,6 +63,15 @@ class TuiEngine:
                         self.options)
 
     def render(self, title: str, data: dict, options: dict):
+        """
+        Converts input into a box-like structure
+        :param title: The title of the structure
+        :param data: The data displayed in the middle box.
+                     Both key and entry of the dict are displayed
+        :param options: The options displayed in the bottom box
+                        The keys should be strings, the entries have to be
+                        function pointers
+        """
         check_args(title, data, options)
 
         self.title = title
