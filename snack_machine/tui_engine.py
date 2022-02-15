@@ -19,6 +19,18 @@ def required_length(title: str, data: dict, options: dict):
     return final_len
 
 
+def _display(title: str, data: str, options: str, connector: str):
+    os.system("clear")
+
+    print(f"{connector}\n"
+          f"{title}\n"
+          f"{connector}\n"
+          f"{data}"
+          f"{connector}\n"
+          f"{options}"
+          f"{connector}")
+
+
 class TuiEngine:
     color = {"green": "\033[92m",
              "none": "\033[0m"}
@@ -88,17 +100,6 @@ class TuiEngine:
 
         return options_render
 
-    def _display(self, title: str, data: str, options: str, connector: str):
-        os.system("clear")
-
-        print(f"{connector}\n"
-              f"{title}\n"
-              f"{connector}\n"
-              f"{data}"
-              f"{connector}\n"
-              f"{options}"
-              f"{connector}")
-
 
 if __name__ == "__main__":
     print("Running tests for tui_engine.py\n"
@@ -135,4 +136,3 @@ if __name__ == "__main__":
     engine.execute_selected_item()
     engine.selection_up()
     engine.execute_selected_item()
-
