@@ -1,8 +1,24 @@
 from pynput import keyboard
+from tui_engine import TuiEngine
 
 
-def on_key_press():
-    pass
+engine = None
+
+
+def on_key_press(key):
+    global engine
+
+    if key == keyboard.Key.down:
+        engine.selection_down()
+
+    if key == keyboard.Key.up:
+        engine.selection_up()
+
+    if key == keyboard.Key.space:
+        engine.execute_selected_item()
+
+    if key == keyboard.Key.esc:
+        exit(0)
 
 
 def placeholder():
@@ -10,13 +26,20 @@ def placeholder():
 
 
 def main():
+    global engine
+
+    engine = TuiEngine()
+
     title = "The wonderful Snack Machine"
     info = {"Balance": "100$",
-            "Products available": "Unknown"}
+            "Products available": "Unknown",
+            "How to use": "Arrow keys to change selection, space to select"}
     options = {"Do nothing once": placeholder,
                "Do nothing again": placeholder}
 
-    with keyboard.Listener(on_press=on_key_press()) as listener:
+    engine.render(title, info, options)
+
+    with keyboard.Listener(on_key_press) as listener:
         while True:
             try:
                 listener.join()

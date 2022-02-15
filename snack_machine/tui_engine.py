@@ -92,7 +92,7 @@ class TuiEngine:
         os.system("clear")
 
         print(f"{connector}\n"
-              f"{title}"
+              f"{title}\n"
               f"{connector}\n"
               f"{data}"
               f"{connector}\n"
