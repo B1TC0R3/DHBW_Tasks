@@ -17,9 +17,6 @@ def on_key_press(key):
     if key == keyboard.Key.space:
         engine.execute_selected_item()
 
-    if key == keyboard.Key.esc:
-        exit(0)
-
 
 def placeholder():
     pass
@@ -35,7 +32,8 @@ def main():
             "Products available": "Unknown",
             "How to use": "Arrow keys to change selection, space to select"}
     options = {"Do nothing once": placeholder,
-               "Do nothing again": placeholder}
+               "Do nothing again": placeholder,
+               "Exit": exit}
 
     engine.render(title, info, options)
 

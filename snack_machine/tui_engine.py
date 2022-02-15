@@ -114,7 +114,7 @@ if __name__ == "__main__":
     def function_three():
         print("function three executed!")
 
-    engine.render("Test Run", {"Information": "Test Run", "Length Test": "This line is incrediby long because "
+    engine.render("Test Run", {"Information": "Test Run", "Length Test": "This line is incredibly long because "
                                                                          "i want too see how my application deals "
                                                                          "with it, lets go and test it out :D",
                                "Symbol Test": "@ſ€¶ŧ←↓→øþſðđŋħł»«¢„“”µ·…–′¹²³¼½¬{[]}\\"},
