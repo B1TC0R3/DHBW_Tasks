@@ -16,6 +16,7 @@ class SnackMachine:
 
         self.balance = balance
         self._generate_snacks()
+        self.display()
 
     def _generate_snacks(self):
         """
@@ -70,13 +71,13 @@ class SnackMachine:
         :param key: The keycode for the pressed key
         :return: None
         """
-        if key is keyboard.Key.down:
+        if key is keyboard.Key.up:
             if self.selected_index > 0:
                 self.selected_index -= 1
 
             self.display()
 
-        if key is keyboard.Key.up:
+        if key is keyboard.Key.down:
             if self.selected_index < len(self.snacks)-1:
                 self.selected_index += 1
 
