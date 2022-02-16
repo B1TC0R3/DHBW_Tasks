@@ -1,4 +1,7 @@
 class Snack:
+    """
+    This class represents a single snack
+    """
     name = ""
     price = 0.0
     amount = 0
