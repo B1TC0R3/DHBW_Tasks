@@ -18,7 +18,8 @@ class SnackMachine:
 
     def _generate_snacks(self):
         """
-        This method creates a list of snacks
+        Creates a list of snacks.
+
         :return: None
         """
         snickers = Snack("Snickers", 0.85, 2)
@@ -45,9 +46,10 @@ class SnackMachine:
 
     def run(self):
         """
-        The 'main' loop of the application
-        Will repeat until the program is terminated
-        :return:
+        The 'main' loop of the application.\n
+        Takes care of error handling.
+
+        :return: None
         """
         try:
             with keyboard.Listener(on_press=self.on_press) as listener:
@@ -61,6 +63,12 @@ class SnackMachine:
             print("Failed to normally stop input-listener.\nForced stop.\nExiting Application.")
 
     def on_press(self, key):
+        """
+        Manages the users keyboard inputs.
+
+        :param key: The keycode for the pressed key
+        :return: None
+        """
         if key is keyboard.Key.down:
             if self.selected_item > 0:
                 self.selected_item -= 1
@@ -73,6 +81,11 @@ class SnackMachine:
             self.buy_selected_snack()
 
     def add_balance(self):
+        """
+        This method enables the user to add balance to the snack machine.
+
+        :return: None
+        """
         os.system("clear")
 
         added_balance = float(input("Amount: "))
@@ -82,6 +95,12 @@ class SnackMachine:
         pass
 
     def display(self):
+        """
+        Formats the object's data for TuiEngine.
+        Then runs TuiEngine.render().
+
+        :return: None
+        """
         infos = {"Balance": f"{balance:.2f}€"}
         options = []
 
