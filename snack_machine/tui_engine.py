@@ -43,7 +43,7 @@ class TuiEngine:
 
     line_length = 0
 
-    def render(self, title: str, data: dict, options: list):
+    def render(self, title: str, data: dict, options: list, selected_index: int):
         """
         Converts input into a box-like structure
         :param title: The title of the structure
@@ -53,7 +53,12 @@ class TuiEngine:
                         The keys should be strings, the entries have to be
                         function pointers
         """
-        check_args(title, data, options)
+        check_args(title, data, options, selected_index)
+        if not isinstance(title, str)\
+           or not isinstance(data, dict)\
+           or not isinstance(options, list)\
+           or not isinstance(selected_index, int):
+            raise TypeError("A parameter passed to TuiEngine.render() had the wrong type.")
 
         self.title = title
         self.data = data

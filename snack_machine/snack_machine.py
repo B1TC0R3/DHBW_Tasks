@@ -1,6 +1,7 @@
 from snack import Snack
 from tui_engine import TuiEngine
 from pynput import keyboard
+from Xlib.error import ConnectionClosedError
 
 
 class SnackMachine:
@@ -59,7 +60,7 @@ class SnackMachine:
             print("There has been an error while trying to read a value!")
         except KeyboardInterrupt:
             print("Input-listener stopped.\nExiting Application.")
-        except Xlib.error.ConnectionClosedError:
+        except ConnectionClosedError:
             print("Failed to normally stop input-listener.\nForced stop.\nExiting Application.")
 
     def on_press(self, key):
@@ -73,12 +74,17 @@ class SnackMachine:
             if self.selected_item > 0:
                 self.selected_item -= 1
 
-        if key is keyboard.key.up:
+            self.display()
+
+        if key is keyboard.Key.up:
             if self.selected_item < len(self.snacks)-1:
                 self.selected_item += 1
 
+            self.display()
+
         if key is keyboard.Key.space:
             self.buy_selected_snack()
+            self.display()
 
     def add_balance(self):
         """
@@ -101,8 +107,13 @@ class SnackMachine:
 
         :return: None
         """
-        infos = {"Balance": f"{balance:.2f}€"}
+        title = "Snack Machine"
+        infos = {"Balance": f"{self.balance:.2f}€",
+                 "Select an item": "Arrow keys",
+                 "Buy an item": "Space"}
         options = []
 
         for snack in self.snacks:
             options.append(f"{snack.name} ({snack.amount}x): {snack.price:.2f}€")
+
+        self.engine.render(title=title, data=infos, options=options)
