@@ -63,6 +63,7 @@ class TuiEngine:
         self.title = title
         self.data = data
         self.options = options
+        self.selected_index = selected_index
 
         self.line_length = required_length(title, data, options)
         connector = f"#-{'-'*self.line_length}-#"
