@@ -14,3 +14,17 @@ class Snack:
         self.name = name
         self.price = price
         self.amount = amount
+
+    def buy(self) -> bool:
+        """
+        This method deducts 1 from the product amount
+        as long as the snack is in stock
+        :return: True, if the process was successful
+                 False, if the process could not be completed
+        """
+        if self.amount > 0:
+            self.amount -= 1
+            return True
+        return False
+
+

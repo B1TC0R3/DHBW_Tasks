@@ -5,6 +5,7 @@ from pynput import keyboard
 
 class SnackMachine:
     balance = 0.0
+    selected_item = 0
     snacks = []
     engine = TuiEngine()
 
@@ -52,13 +53,15 @@ class SnackMachine:
 
     def on_press(self, key):
         if key is keyboard.Key.down:
-            self.engine.selection_down()
+            if self.selected_item > 0:
+                self.selected_item -= 1
 
         if key is keyboard.key.up:
-            self.engine.selection_up()
+            if self.selected_item < len(self.snacks)-1:
+                self.selected_item += 1
 
         if key is keyboard.Key.space:
-            self.engine.execute_selected_item()
+            self.buy_selected_snack()
 
     def add_balance(self):
         os.system("clear")
@@ -66,8 +69,12 @@ class SnackMachine:
         added_balance = float(input("Amount: "))
         self.balance += added_balance
 
+    def buy_selected_snack(self):
+        pass
+
     def display(self):
         infos = {"Balance": f"{balance:.2f}€"}
         options = {}
 
         for snack in self.snacks:
+            options[f"{snack} ({snack.amount}x): {snack.price:.2f}€"] =
