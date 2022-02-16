@@ -1,9 +1,12 @@
 import snack
+from tui_engine import TuiEngine
+from pynput import keyboard
 
 
 class SnackMachine:
-    balance = 100.0
-    items = []
+    balance = 0.0
+    snacks = []
+    engine = TuiEngine()
 
     def __init__(self, balance: float):
         if type(balance) is not type(float):
@@ -24,19 +27,47 @@ class SnackMachine:
         hypercube = Snack("A Hypercube. What?", 10.00, 2)
         bounty = Snack("Bounty", 0.90, 2)
 
-        self.items.append(snickers)
-        self.items.append(mars)
-        self.items.append(lays)
-        self.items.append(milky)
-        self.items.append(gummybears)
-        self.items.append(gum)
-        self.items.append(potato)
-        self.items.append(cookies)
-        self.items.append(hypercube)
-        self.items.append(bounty)
+        self.snacks.append(snickers)
+        self.snacks.append(mars)
+        self.snacks.append(lays)
+        self.snacks.append(milky)
+        self.snacks.append(gummybears)
+        self.snacks.append(gum)
+        self.snacks.append(potato)
+        self.snacks.append(cookies)
+        self.snacks.append(hypercube)
+        self.snacks.append(bounty)
 
-    def add_balance(self, balance: float):
-        if type(balance) is not type(float):
-            raise TypeError("'SnackMachine.balance' was not 'float'")
+    def run(self):
+        try:
+            with keyboard.Listener(on_press=self.on_press) as listener:
+                while True:
+                    listener.join()
+        except TypeError:
+            print("There has been an error while trying to read a value!")
+        except KeyboardInterrupt:
+            print("Input-listener stopped.\nExiting Application.")
+        except Xlib.error.ConnectionClosedError:
+            print("Failed to normally stop input-listener.\nForced stop.\nExiting Application.")
 
-        self.balance += balance
+    def on_press(self, key):
+        if key is keyboard.Key.down:
+            self.engine.selection_down()
+
+        if key is keyboard.key.up:
+            self.engine.selection_up()
+
+        if key is keyboard.Key.space:
+            self.engine.execute_selected_item()
+
+    def add_balance(self):
+        os.system("clear")
+
+        added_balance = float(input("Amount: "))
+        self.balance += added_balance
+
+    def display(self):
+        infos = {"Balance": f"{balance:.2f}€"}
+        options = {}
+
+        for snack in self.snacks:

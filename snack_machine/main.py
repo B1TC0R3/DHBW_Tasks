@@ -26,30 +26,8 @@ def add_balance():
 
 
 def main():
-    global engine
-
-    engine = TuiEngine()
-    snack_machine = SnackMachine(balance=20.0)
-
-    title = "The wonderful Snack Machine"
-    info = {"Balance": "0$",
-            "Products available": "Unknown",
-            "How to use": "Arrow keys to change selection, space to select"}
-    options = {"Add Balance": add_balance,
-               "Exit": exit}
-
-    engine.render(title, info, options)
-
-    try:
-        with keyboard.Listener(on_key_press) as listener:
-            while True:
-                listener.join()
-    except TypeError:
-        print("There has been an error while trying to read a value!")
-    except KeyboardInterrupt:
-        print("Input-listener stopped.\nExiting Application.")
-    except Xlib.error.ConnectionClosedError:
-        print("Failed to normally stop input-listener.\nForced stop.\nExiting Application.")
+    snack_machine = SnackMachine(balance=0.0)
+    snack_machine.run()
 
 
 if __name__ == "__main__":
