@@ -6,7 +6,7 @@ from Xlib.error import ConnectionClosedError
 
 class SnackMachine:
     balance = 0.0
-    selected_item = 0
+    selected_index = 0
     snacks = []
     engine = TuiEngine()
 
@@ -71,14 +71,14 @@ class SnackMachine:
         :return: None
         """
         if key is keyboard.Key.down:
-            if self.selected_item > 0:
-                self.selected_item -= 1
+            if self.selected_index > 0:
+                self.selected_index -= 1
 
             self.display()
 
         if key is keyboard.Key.up:
-            if self.selected_item < len(self.snacks)-1:
-                self.selected_item += 1
+            if self.selected_index < len(self.snacks)-1:
+                self.selected_index += 1
 
             self.display()
 
@@ -116,4 +116,4 @@ class SnackMachine:
         for snack in self.snacks:
             options.append(f"{snack.name} ({snack.amount}x): {snack.price:.2f}€")
 
-        self.engine.render(title=title, data=infos, options=options)
+        self.engine.render(title=title, data=infos, options=options, selected_index=self.selected_index)
