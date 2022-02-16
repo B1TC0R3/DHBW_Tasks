@@ -7,11 +7,11 @@ class Snack:
     amount = 0
 
     def __init__(self, name: str, price: float, amount: int):
-        if type(name) is not str:
+        if not isinstance(name, str):
             raise TypeError("'Snack.name' was not 'string'")
-        if type(price) is not type(float):
+        if not isinstance(price, float):
             raise TypeError("'Snack.price' was not 'float'")
-        if type(amount) is not type(int):
+        if not isinstance(amount, int):
             raise TypeError("'Snack.amount' was not 'int'")
 
         self.name = name

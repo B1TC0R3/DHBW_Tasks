@@ -1,4 +1,4 @@
-import snack
+from snack import Snack
 from tui_engine import TuiEngine
 from pynput import keyboard
 
@@ -10,13 +10,17 @@ class SnackMachine:
     engine = TuiEngine()
 
     def __init__(self, balance: float):
-        if type(balance) is not type(float):
+        if not isinstance(balance, float):
             raise TypeError("'SnackMachine.balance' was not 'float'")
 
         self.balance = balance
         self._generate_snacks()
 
     def _generate_snacks(self):
+        """
+        This method creates a list of snacks
+        :return: None
+        """
         snickers = Snack("Snickers", 0.85, 2)
         mars = Snack("Mars", 1.00, 2)
         lays = Snack("Lays Chips", 1.25, 2)
@@ -40,6 +44,11 @@ class SnackMachine:
         self.snacks.append(bounty)
 
     def run(self):
+        """
+        The 'main' loop of the application
+        Will repeat until the program is terminated
+        :return:
+        """
         try:
             with keyboard.Listener(on_press=self.on_press) as listener:
                 while True:
@@ -74,7 +83,7 @@ class SnackMachine:
 
     def display(self):
         infos = {"Balance": f"{balance:.2f}€"}
-        options = {}
+        options = []
 
         for snack in self.snacks:
-            options[f"{snack} ({snack.amount}x): {snack.price:.2f}€"] =
+            options.append(f"{snack.name} ({snack.amount}x): {snack.price:.2f}€")
