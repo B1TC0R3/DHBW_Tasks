@@ -1,4 +1,4 @@
-from exceptions import InvalidArgumentException
+from exceptions import InvalidArgumentError
 
 
 def dict_line_length(element: dict) -> int:
@@ -43,4 +43,4 @@ def check_args(*args):
     """
     for arg in args:
         if arg is None:
-            raise InvalidArgumentException("A parameter was 'None'.")
+            raise InvalidArgumentError("A parameter was 'None'.")

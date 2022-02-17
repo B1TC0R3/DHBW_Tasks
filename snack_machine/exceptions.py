@@ -11,3 +11,8 @@ class InvalidInputError(Exception):
 class ItemNotInStockError(Exception):
     def __init__(self):
         super(ItemNotInStockError, self).__init__()
+
+
+class InvalidArgumentError(Exception):
+    def __init__(self):
+        super(InvalidArgumentError, self).__init__()
