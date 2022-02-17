@@ -6,7 +6,16 @@ from utility import check_args,\
                     list_line_length
 
 
-def required_length(title: str, data: dict, options: list):
+def required_length(title: str, data: dict, options: list) -> int:
+    """
+    Calculates the line length required to put the
+    entire input into an even box.
+
+    :param title: The title of the Box
+    :param data: All data as a dictionary
+    :param options: All options as a list
+    :return: The required line length
+    """
     final_len = len(title)
     data_len = dict_line_length(data)
     options_len = list_line_length(options)
@@ -20,6 +29,15 @@ def required_length(title: str, data: dict, options: list):
 
 
 def _display(title: str, data: str, options: str, connector: str):
+    """
+    Print all input as a box.
+
+    :param title: Title of the box
+    :param data: The formatted data
+    :param options: The formatted options
+    :param connector: The line at the top and bottom of each box
+    :return: None
+    """
     os.system("clear")
 
     print(f"{connector}\n"
@@ -32,6 +50,9 @@ def _display(title: str, data: str, options: str, connector: str):
 
 
 class TuiEngine:
+    """
+    Renders given input into three boxes and prints it on the screen.
+    """
     color = {"green": "\033[92m",
              "none": "\033[0m"}
 
