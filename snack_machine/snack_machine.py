@@ -1,7 +1,6 @@
 import os
 from snack import Snack
 from tui_engine import TuiEngine
-from Xlib.error import ConnectionClosedError
 
 
 class SnackMachine:
@@ -53,22 +52,33 @@ class SnackMachine:
 
         :return: None
         """
-        try:
-            while True:
+        while True:
+            try:
                 self.display()
                 self.handle_input()
-        except TypeError:
-            print("There has been an error while trying to read a value!")
-        except KeyboardInterrupt:
-            print("Input-listener stopped.\nExiting Application.")
-        except ConnectionClosedError:
-            print("Failed to normally stop input-listener.\nForced stop.\nExiting Application.")
+            except TypeError:
+                print("There has been an error while trying to read a value!")
+            except ValueError:
+                print("Invalid Input")
 
     def handle_input(self):
         option = input("Input: ")
 
         if option == "q":
             exit(0)
+
+        if option == "b":
+            self.add_balance()
+
+        if option.isnumeric():
+            buy_index = int(option)
+            self.buy_snack(buy_index)
+
+    def buy_snack(self, index: int):
+        selected_snack = self.snacks[index]
+
+        if selected_snack.price > self.balance:
+            return
 
     def add_balance(self):
         """
@@ -80,9 +90,6 @@ class SnackMachine:
 
         added_balance = float(input("Amount: ").replace("b", "").strip())
         self.balance += added_balance
-
-    def buy_selected_snack(self):
-        pass
 
     def display(self):
         """
@@ -99,6 +106,7 @@ class SnackMachine:
 
         options = []
         for index, snack in enumerate(self.snacks):
-            options.append(f"{index} | {snack.name} ({snack.amount}x): {snack.price:.2f}€")
+            if snack.amount > 0:
+                options.append(f"{index} | {snack.name} ({snack.amount}x): {snack.price:.2f}€")
 
         self.engine.render(title=title, data=infos, options=options)
