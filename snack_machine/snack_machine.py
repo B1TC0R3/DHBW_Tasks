@@ -7,11 +7,20 @@ from exceptions import InvalidInputError,\
 
 
 def display_error(message: str):
+    """
+    Displays an error message and forces the user to confirm.
+
+    :param message: The message to be displayed
+    :return: None
+    """
     print(message)
     input("Press 'enter' to continue...")
 
 
 class SnackMachine:
+    """
+    Simulates a snack-machine.
+    """
     balance = 0.0
     selected_index = 0
     snacks = []
