@@ -1,28 +1,13 @@
-class InvalidLoginException(Exception):
-    def __init__(self):
-        super(InvalidLoginException, self).__init__()
-
-
-class AccountExistsException(Exception):
-    def __init__(self):
-        super(AccountExistsException, self).__init__()
-
-
-class InvalidArgumentException(Exception):
+class BalanceToLowError(Exception):
     def __init__(self, msg: str):
-        super(InvalidArgumentException, self).__init__(msg)
+        super(BalanceToLowError, self).__init__(msg)
 
 
-class BalanceToLowException(Exception):
-    def __init__(self, msg: str):
-        super(BalanceToLowException, self).__init__(msg)
-
-
-class InvalidTransferAmountException(Exception):
+class InvalidInputError(Exception):
     def __init__(self):
-        super(InvalidTransferAmountException, self).__init__()
+        super(InvalidInputError, self).__init__()
 
 
-class RecipientNotFoundException(Exception):
+class ItemNotInStockError(Exception):
     def __init__(self):
-        super(RecipientNotFoundException, self).__init__()
+        super(ItemNotInStockError, self).__init__()

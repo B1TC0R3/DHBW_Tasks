@@ -1,6 +1,14 @@
 import os
 from snack import Snack
 from tui_engine import TuiEngine
+from exceptions import InvalidInputError,\
+                       BalanceToLowError,\
+                       ItemNotInStockError
+
+
+def display_error(message: str):
+    print(message)
+    input("Press 'enter' to continue...")
 
 
 class SnackMachine:
@@ -57,29 +65,50 @@ class SnackMachine:
                 self.display()
                 self.handle_input()
             except TypeError:
-                print("There has been an error while trying to read a value!")
+                display_error("There has been an error while trying to read a value.")
             except ValueError:
-                print("Invalid Input")
+                display_error("Invalid Input.")
+            except IndexError:
+                display_error("Item not for sale.")
+            except BalanceToLowError:
+                display_error("You do not have enough money.")
+            except ItemNotInStockError:
+                display_error("This item is currently not in stock.")
 
     def handle_input(self):
+        """
+        Handles the users input and calls the\n
+        corresponding methods
+
+        :return: None
+        """
         option = input("Input: ")
 
         if option == "q":
             exit(0)
 
-        if option == "b":
+        elif option == "b":
             self.add_balance()
 
-        if option.isnumeric():
+        elif option.isnumeric():
             buy_index = int(option)
             self.buy_snack(buy_index)
 
+        else:
+            raise InvalidInputError()
+
     def buy_snack(self, index: int):
+        """
+        Handles the 'buying' process of the machine.
+
+        :param index: The index of the item to buy
+        :return: None
+        """
         if self.snacks[index].price > self.balance:
-            return
+            raise BalanceToLowError()
 
         if not self.snacks[index].buy():
-            return
+            raise ItemNotInStockError
 
         self.balance -= self.snacks[index].price
 
