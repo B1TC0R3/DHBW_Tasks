@@ -43,7 +43,7 @@ class TuiEngine:
 
     line_length = 0
 
-    def render(self, title: str, data: dict, options: list, selected_index: int):
+    def render(self, title: str, data: dict, options: list):
         """
         Converts input into a box-like structure
         :param title: The title of the structure
@@ -53,17 +53,15 @@ class TuiEngine:
                         The keys should be strings, the entries have to be
                         function pointers
         """
-        check_args(title, data, options, selected_index)
+        check_args(title, data, options)
         if not isinstance(title, str)\
            or not isinstance(data, dict)\
-           or not isinstance(options, list)\
-           or not isinstance(selected_index, int):
+           or not isinstance(options, list):
             raise TypeError("A parameter passed to TuiEngine.render() had the wrong type.")
 
         self.title = title
         self.data = data
         self.options = options
-        self.selected_index = selected_index
 
         self.line_length = required_length(title, data, options)
         connector = f"#-{'-'*self.line_length}-#"
@@ -87,10 +85,6 @@ class TuiEngine:
     def _render_options(self) -> str:
         options_render = ""
         for index, entry in enumerate(self.options):
-            if index == self.selected_index:
-                options_render += f"->{self.color['green']}{entry}{self.color['none']}" \
-                                  f"{(self.line_length-len(entry))*' '} |\n"
-            else:
-                options_render += f"| {entry}{(self.line_length-len(entry))*' '} |\n"
+            options_render += f"| {entry}{(self.line_length-len(entry))*' '} |\n"
 
         return options_render

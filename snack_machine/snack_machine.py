@@ -1,6 +1,6 @@
+import os
 from snack import Snack
 from tui_engine import TuiEngine
-from pynput import keyboard
 from Xlib.error import ConnectionClosedError
 
 
@@ -24,16 +24,16 @@ class SnackMachine:
 
         :return: None
         """
-        snickers = Snack("Snickers", 0.85, 2)
-        mars = Snack("Mars", 1.00, 2)
-        lays = Snack("Lays Chips", 1.25, 2)
-        milky = Snack("Milky Chocolate", 0.80, 2)
-        gummybears = Snack("Gummybears", 1.05, 2)
-        gum = Snack("Gum (5x Pieces)", 0.50, 2)
-        potato = Snack("A singular potato", 0.23, 2)
-        cookies = Snack("Oreo Cookies", 0.95, 2)
+        snickers = Snack("Snickers          ", 0.85, 2)
+        mars = Snack("Mars              ", 1.00, 2)
+        lays = Snack("Lays Chips        ", 1.25, 2)
+        milky = Snack("Milky Chocolate   ", 0.80, 2)
+        gummybears = Snack("Gummybears        ", 1.05, 2)
+        gum = Snack("Gum (5x Pieces)   ", 0.50, 2)
+        potato = Snack("A singular potato ", 0.23, 2)
+        cookies = Snack("Oreo Cookies      ", 0.95, 2)
         hypercube = Snack("A Hypercube. What?", 10.00, 2)
-        bounty = Snack("Bounty", 0.90, 2)
+        bounty = Snack("Bounty            ", 0.90, 2)
 
         self.snacks.append(snickers)
         self.snacks.append(mars)
@@ -54,9 +54,9 @@ class SnackMachine:
         :return: None
         """
         try:
-            with keyboard.Listener(on_press=self.on_press) as listener:
-                while True:
-                    listener.join()
+            while True:
+                self.display()
+                self.handle_input()
         except TypeError:
             print("There has been an error while trying to read a value!")
         except KeyboardInterrupt:
@@ -64,28 +64,11 @@ class SnackMachine:
         except ConnectionClosedError:
             print("Failed to normally stop input-listener.\nForced stop.\nExiting Application.")
 
-    def on_press(self, key):
-        """
-        Manages the users keyboard inputs.
+    def handle_input(self):
+        option = input("Input: ")
 
-        :param key: The keycode for the pressed key
-        :return: None
-        """
-        if key is keyboard.Key.up:
-            if self.selected_index > 0:
-                self.selected_index -= 1
-
-            self.display()
-
-        if key is keyboard.Key.down:
-            if self.selected_index < len(self.snacks)-1:
-                self.selected_index += 1
-
-            self.display()
-
-        if key is keyboard.Key.space:
-            self.buy_selected_snack()
-            self.display()
+        if option == "q":
+            exit(0)
 
     def add_balance(self):
         """
@@ -95,7 +78,7 @@ class SnackMachine:
         """
         os.system("clear")
 
-        added_balance = float(input("Amount: "))
+        added_balance = float(input("Amount: ").replace("b", "").strip())
         self.balance += added_balance
 
     def buy_selected_snack(self):
@@ -110,11 +93,12 @@ class SnackMachine:
         """
         title = "Snack Machine"
         infos = {"Balance": f"{self.balance:.2f}€",
-                 "Select an item": "Arrow keys",
-                 "Buy an item": "Space"}
+                 "Add balance   ": "Enter 'b'",
+                 "Buy an item   ": "Enter item id",
+                 "Exit          ": "Enter 'q'"}
+
         options = []
+        for index, snack in enumerate(self.snacks):
+            options.append(f"{index} | {snack.name} ({snack.amount}x): {snack.price:.2f}€")
 
-        for snack in self.snacks:
-            options.append(f"{snack.name} ({snack.amount}x): {snack.price:.2f}€")
-
-        self.engine.render(title=title, data=infos, options=options, selected_index=self.selected_index)
+        self.engine.render(title=title, data=infos, options=options)
