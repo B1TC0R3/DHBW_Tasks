@@ -75,10 +75,13 @@ class SnackMachine:
             self.buy_snack(buy_index)
 
     def buy_snack(self, index: int):
-        selected_snack = self.snacks[index]
-
-        if selected_snack.price > self.balance:
+        if self.snacks[index].price > self.balance:
             return
+
+        if not self.snacks[index].buy():
+            return
+
+        self.balance -= self.snacks[index].price
 
     def add_balance(self):
         """
