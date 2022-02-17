@@ -79,6 +79,8 @@ class SnackMachine:
                 display_error("Invalid Input.")
             except IndexError:
                 display_error("Item not for sale.")
+            except InvalidInputError:
+                display_error("Invalid input.")
             except BalanceToLowError:
                 display_error("You do not have enough money.")
             except ItemNotInStockError:
