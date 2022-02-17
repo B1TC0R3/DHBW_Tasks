@@ -75,6 +75,12 @@ class TuiEngine:
                  connector)
 
     def _render_data(self) -> str:
+        """
+        Creates a string containing all the formatted\n
+        data.
+
+        :return: str
+        """
         data_render = ""
         for key, entry in self.data.items():
             line = f"{key}: {entry}"
@@ -83,6 +89,11 @@ class TuiEngine:
         return data_render
 
     def _render_options(self) -> str:
+        """
+        Creates a string containing all the formatted options.
+
+        :return: str
+        """
         options_render = ""
         for index, entry in enumerate(self.options):
             options_render += f"| {entry}{(self.line_length-len(entry))*' '} |\n"
