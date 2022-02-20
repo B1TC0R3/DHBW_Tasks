@@ -1,4 +1,5 @@
 import os
+import json
 from snack import Snack
 from tui_engine import TuiEngine
 from exceptions import InvalidInputError,\
@@ -50,10 +51,10 @@ class SnackMachine:
         with open(f"{self.file_dir}/{self.file_snacks}", "r") as file:
             file_content = json.load(file)
 
-            for snack in fil_content:
-                self.snacks.append(Snack(snack["name"],
-                                         float(snack["price"]),
-                                         int(snack["amount"])))
+            for snack in file_content:
+                self.snacks.append(Snack(snack[0],
+                                   float(snack[1]),
+                                   int(snack[2])))
 
     def _generate_snacks(self):
         """
@@ -85,16 +86,36 @@ class SnackMachine:
 
         self._save()
 
+    def _snacks_to_json(self) -> list:
+        """
+        Converts list of Snacks to a string\n
+        readable by json
+
+        :return: A two-dimensional list containing all the snacks data
+        """
+        json_snacks = []
+        for snack in self.snacks:
+            json_snacks.append([snack.name, str(snack.price), str(snack.amount)])
+
+        return json_snacks
+
     def _save(self):
+        """
+        Save the machine's status to save-file
+
+        :return: None
+        """
+        json_snacks = self._snacks_to_json()
+
         if not os.path.isdir(self.file_dir):
             os.mkdir(self.file_dir)
 
         if os.path.isfile(f"{self.file_dir}/{self.file_snacks}"):
-            with open(f"{self.file_dir}/{self.file_snacks}", "x") as file:
-                json.dump(self.snacks, file)
-        else:
             with open(f"{self.file_dir}/{self.file_snacks}", "w") as file:
-                json.dump(self.snacks, file)
+                json.dump(json_snacks, file)
+        else:
+            with open(f"{self.file_dir}/{self.file_snacks}", "x") as file:
+                json.dump(json_snacks, file)
 
     def run(self):
         """
