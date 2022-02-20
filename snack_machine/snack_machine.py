@@ -83,7 +83,7 @@ class SnackMachine:
         self.snacks.append(hypercube)
         self.snacks.append(bounty)
 
-        self.save()
+        self._save()
 
     def _save(self):
         if not os.path.isdir(self.file_dir):
