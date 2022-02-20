@@ -6,7 +6,7 @@ from exceptions import InvalidInputError,\
                        ItemNotInStockError
 
 
-def display_error(message: str):
+def display_message(message: str):
     """
     Displays an error message and forces the user to confirm.
 
@@ -26,13 +26,34 @@ class SnackMachine:
     snacks = []
     engine = TuiEngine()
 
+    file_dir = "./save"
+    file_snacks = "snacks.json"
+
     def __init__(self, balance: float):
         if not isinstance(balance, float):
             raise TypeError("'SnackMachine.balance' was not 'float'")
 
         self.balance = balance
-        self._generate_snacks()
+
+        if os.path.isfile(f"{self.file_dir}/{self.file_snacks}"):
+            self._load_snacks()
+        else:
+            self._generate_snacks()
         self.display()
+
+    def _load_snacks(self):
+        """
+        Loads snack data from save-file.
+
+        :return:
+        """
+        with open(f"{self.file_dir}/{self.file_snacks}", "r") as file:
+            file_content = json.load(file)
+
+            for snack in fil_content:
+                self.snacks.append(Snack(snack["name"],
+                                         float(snack["price"]),
+                                         int(snack["amount"])))
 
     def _generate_snacks(self):
         """
@@ -62,6 +83,19 @@ class SnackMachine:
         self.snacks.append(hypercube)
         self.snacks.append(bounty)
 
+        self.save()
+
+    def _save(self):
+        if not os.path.isdir(self.file_dir):
+            os.mkdir(self.file_dir)
+
+        if os.path.isfile(f"{self.file_dir}/{self.file_snacks}"):
+            with open(f"{self.file_dir}/{self.file_snacks}", "x") as file:
+                json.dump(self.snacks, file)
+        else:
+            with open(f"{self.file_dir}/{self.file_snacks}", "w") as file:
+                json.dump(self.snacks, file)
+
     def run(self):
         """
         The 'main' loop of the application.\n
@@ -73,18 +107,19 @@ class SnackMachine:
             try:
                 self.display()
                 self.handle_input()
+                self._save()
             except TypeError:
-                display_error("There has been an error while trying to read a value.")
+                display_message("There has been an error while trying to read a value.")
             except ValueError:
-                display_error("Invalid Input.")
+                display_message("Invalid Input.")
             except IndexError:
-                display_error("Item not for sale.")
+                display_message("Item not for sale.")
             except InvalidInputError:
-                display_error("Invalid input.")
+                display_message("Invalid input.")
             except BalanceToLowError:
-                display_error("You do not have enough money.")
+                display_message("You do not have enough money.")
             except ItemNotInStockError:
-                display_error("This item is currently not in stock.")
+                display_message("This item is currently not in stock.")
 
     def handle_input(self):
         """
@@ -122,6 +157,7 @@ class SnackMachine:
             raise ItemNotInStockError
 
         self.balance -= self.snacks[index].price
+        display_message(f"Bought {self.snacks[index].name}.")
 
     def add_balance(self):
         """
