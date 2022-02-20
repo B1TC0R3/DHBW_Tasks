@@ -189,6 +189,8 @@ class SnackMachine:
         os.system("clear")
 
         added_balance = float(input("Amount: ").replace("b", "").strip())
+        if balance < 0.01:
+            raise ValueError
         self.balance += added_balance
 
     def display(self):
