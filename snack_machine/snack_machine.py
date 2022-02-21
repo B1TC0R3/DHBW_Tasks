@@ -1,7 +1,7 @@
 import os
 import json
 from snack import Snack
-from account import Account
+from user import User
 from tui_engine import TuiEngine
 from exceptions import InvalidInputError,\
                        BalanceToLowError,\
@@ -23,12 +23,6 @@ class SnackMachine:
     """
     Simulates a snack-machine.
     """
-    accounts = []
-    account_name = None
-    balance = 0.0
-    selected_index = 0
-    snacks = []
-    engine = TuiEngine()
 
     file_dir = "./save"
     file_snacks = "snacks.json"
@@ -37,6 +31,10 @@ class SnackMachine:
     def __init__(self, balance: float):
         if not isinstance(balance, float):
             raise TypeError("'SnackMachine.balance' was not 'float'")
+
+        self.snacks = []
+        self.accounts = []
+        self.engine = TuiEngine()
 
         self.balance = balance
 
@@ -49,7 +47,8 @@ class SnackMachine:
         self.display()
 
     def _load_accounts(self):
-        default_acc = Account("None", "0.0")
+        default_acc = User("None", "0.0")
+
         self.accounts.append(default_acc)
         self.account_name = default_acc.code
         self.balance = default_acc.balance
@@ -59,10 +58,10 @@ class SnackMachine:
             with open(path, "r") as file:
                 acc_list = json.load(file)
                 for account in acc_list:
-                    self.accounts.append(Account(account["code"], account["balance"]))
+                    self.accounts.append(User(account["code"], account["balance"]))
         else:
             with open(path, "x") as file:
-                json.dump("[{\"code\":\"None\", \"balance\": \"0.0\"}]")
+                json.dump('[{"code":"None", "balance": "0.0"}]', file)
 
     def _load_snacks(self):
         """
@@ -218,7 +217,7 @@ class SnackMachine:
         os.system("clear")
 
         new_acc_name = input("Enter new account code\n(Similar to a password):")
-        self.accounts.append(Account(new_acc_name, 0.0))
+        self.accounts.append(User(new_acc_name, 0.0))
         self.balance = 0.0
 
         with open(f"{self.file_dir}/{self.file_accounts}", "w") as file:
@@ -248,14 +247,14 @@ class SnackMachine:
         :return: None
         """
         title = "Snack Machine"
-        infos = {"Account": f"{self.account_name}",
+        infos = {"User": f"{self.account_name}",
                  "Balance": f"{self.balance:.2f}€",
-                 "How to use    ": "",
+                 "How to use        ": "",
                  "Create new account": "Enter 'c'",
-                 "Login to account": "Enter 'l'",
-                 "Add balance   ": "Enter 'b'",
-                 "Buy an item   ": "Enter item id",
-                 "Exit          ": "Enter 'q'"}
+                 "Login to account  ": "Enter 'l'",
+                 "Add balance       ": "Enter 'b'",
+                 "Buy an item       ": "Enter item id",
+                 "Exit              ": "Enter 'q'"}
 
         options = []
         for index, snack in enumerate(self.snacks):
