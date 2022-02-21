@@ -1,6 +1,7 @@
 import os
 import json
 from snack import Snack
+from account import Account
 from tui_engine import TuiEngine
 from exceptions import InvalidInputError,\
                        BalanceToLowError,\
@@ -22,6 +23,8 @@ class SnackMachine:
     """
     Simulates a snack-machine.
     """
+    accounts = []
+    account_name = None
     balance = 0.0
     selected_index = 0
     snacks = []
@@ -29,6 +32,7 @@ class SnackMachine:
 
     file_dir = "./save"
     file_snacks = "snacks.json"
+    file_accounts = "accounts.json"
 
     def __init__(self, balance: float):
         if not isinstance(balance, float):
@@ -40,7 +44,25 @@ class SnackMachine:
             self._load_snacks()
         else:
             self._generate_snacks()
+
+        self._load_accounts()
         self.display()
+
+    def _load_accounts(self):
+        default_acc = Account("None", "0.0")
+        self.accounts.append(default_acc)
+        self.account_name = default_acc.code
+        self.balance = default_acc.balance
+
+        path = f"{self.file_dir}/{self.file_accounts}"
+        if os.path.isfile(path):
+            with open(path, "r") as file:
+                acc_list = json.load(file)
+                for account in acc_list:
+                    self.accounts.append(Account(account["code"], account["balance"]))
+        else:
+            with open(path, "x") as file:
+                json.dump("[{\"code\":\"None\", \"balance\": \"0.0\"}]")
 
     def _load_snacks(self):
         """
@@ -85,6 +107,9 @@ class SnackMachine:
         self.snacks.append(bounty)
 
         self._save()
+
+    def _restock(self):
+        pass
 
     def _snacks_to_json(self) -> list:
         """
@@ -154,6 +179,15 @@ class SnackMachine:
         if option == "q":
             exit(0)
 
+        elif option == "r":
+            self._restock()
+
+        elif option == "c":
+            self.create_account()
+
+        elif option == "l":
+            self.login()
+
         elif option == "b":
             self.add_balance()
 
@@ -180,6 +214,19 @@ class SnackMachine:
         self.balance -= self.snacks[index].price
         display_message(f"Bought {self.snacks[index].name}.")
 
+    def create_account(self):
+        os.system("clear")
+
+        new_acc_name = input("Enter new account code\n(Similar to a password):")
+        self.accounts.append(Account(new_acc_name, 0.0))
+        self.balance = 0.0
+
+        with open(f"{self.file_dir}/{self.file_accounts}", "w") as file:
+            json.dump(self.accounts, file)
+
+    def login(self):
+        pass
+
     def add_balance(self):
         """
         This method enables the user to add balance to the snack machine.
@@ -201,7 +248,11 @@ class SnackMachine:
         :return: None
         """
         title = "Snack Machine"
-        infos = {"Balance": f"{self.balance:.2f}€",
+        infos = {"Account": f"{self.account_name}",
+                 "Balance": f"{self.balance:.2f}€",
+                 "How to use    ": "",
+                 "Create new account": "Enter 'c'",
+                 "Login to account": "Enter 'l'",
                  "Add balance   ": "Enter 'b'",
                  "Buy an item   ": "Enter item id",
                  "Exit          ": "Enter 'q'"}
