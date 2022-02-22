@@ -86,6 +86,12 @@ class SnackMachine:
 
         self._save()
 
+    def _restock(self):
+        if os.path.isfile(f"{self.file_dir}/{self.file_snacks}"):
+            os.system(f"rm {self.file_dir}/{self.file_snacks}")
+
+        self._generate_snacks()
+
     def _snacks_to_json(self) -> list:
         """
         Converts list of Snacks to a string\n
@@ -154,6 +160,9 @@ class SnackMachine:
         if option == "q":
             exit(0)
 
+        elif option == "r":
+            self._restock()
+
         elif option == "b":
             self.add_balance()
 
@@ -205,6 +214,7 @@ class SnackMachine:
                  "How to use        ": "",
                  "Add balance       ": "Enter 'b'",
                  "Buy an item       ": "Enter item id",
+                 "Restock Items     ": "Enter 'r'",
                  "Exit              ": "Enter 'q'"}
 
         options = []
