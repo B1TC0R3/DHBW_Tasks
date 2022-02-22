@@ -1,3 +1,8 @@
+"""
+Contains multiple simple calculations
+and other functionality
+"""
+
 from exceptions import InvalidArgumentError
 
 
