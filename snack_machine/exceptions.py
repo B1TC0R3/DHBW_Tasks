@@ -1,18 +1,28 @@
+"""
+Contains some custom exceptions.
+This allows for more detailed error handling.
+"""
+
+
 class BalanceToLowError(Exception):
-    def __init__(self, msg: str):
-        super(BalanceToLowError, self).__init__(msg)
+    """
+    Error thrown when the user does not have enough balance to buy an item
+    """
 
 
 class InvalidInputError(Exception):
-    def __init__(self):
-        super(InvalidInputError, self).__init__()
+    """
+    Error thrown when a user enters invalid strings for certain options
+    """
 
 
 class ItemNotInStockError(Exception):
-    def __init__(self):
-        super(ItemNotInStockError, self).__init__()
+    """
+    Error thrown when the user tries to buy an item whose amount has reached zero
+    """
 
 
 class InvalidArgumentError(Exception):
-    def __init__(self):
-        super(InvalidArgumentError, self).__init__()
+    """
+    An error thrown when a method/function receives an invalid parameter
+    """
