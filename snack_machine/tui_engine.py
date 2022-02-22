@@ -1,4 +1,8 @@
 #!/usr/lib/python3
+"""
+Contains the logic to render output into a box layout
+"""
+
 
 import os
 from utility import check_args,\
@@ -20,15 +24,13 @@ def required_length(title: str, data: dict, options: list) -> int:
     data_len = dict_line_length(data)
     options_len = list_line_length(options)
 
-    if final_len < data_len:
-        final_len = data_len
-    if final_len < options_len:
-        final_len = options_len
+    final_len = max(final_len, data_len)
+    final_len = max(final_len, options_len)
 
     return final_len
 
 
-def _display(title: str, data: str, options: str, connector: str):
+def display(title: str, data: str, options: str, connector: str):
     """
     Print all input as a box.
 
@@ -87,15 +89,15 @@ class TuiEngine:
         self.line_length = required_length(title, data, options)
         connector = f"#-{'-'*self.line_length}-#"
         title_render = f"| {title}{(self.line_length-len(title))*' '} |"
-        data_render = self._render_data()
-        options_render = self._render_options()
+        data_render = self.render_data()
+        options_render = self.render_options()
 
-        _display(title_render,
-                 data_render,
-                 options_render,
-                 connector)
+        display(title_render,
+                data_render,
+                options_render,
+                connector)
 
-    def _render_data(self) -> str:
+    def render_data(self) -> str:
         """
         Creates a string containing all the formatted\n
         data.
@@ -109,14 +111,14 @@ class TuiEngine:
 
         return data_render
 
-    def _render_options(self) -> str:
+    def render_options(self) -> str:
         """
         Creates a string containing all the formatted options.
 
         :return: str
         """
         options_render = ""
-        for index, entry in enumerate(self.options):
+        for entry in self.options:
             options_render += f"| {entry}{(self.line_length-len(entry))*' '} |\n"
 
         return options_render
