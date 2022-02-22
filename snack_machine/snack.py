@@ -1,3 +1,8 @@
+"""
+Contains the class Snack
+"""
+
+
 class Snack:
     """
     This class represents a single snack
@@ -30,4 +35,16 @@ class Snack:
             return True
         return False
 
+    def set_amount(self, new_price: float):
+        """
+        Parameter check for setting object price
 
+        :return: None
+        """
+        if not isinstance(new_price, float):
+            raise ValueError
+
+        if new_price < 0.0:
+            raise ValueError
+
+        self.price = new_price
