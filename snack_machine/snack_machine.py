@@ -188,7 +188,7 @@ class SnackMachine:
             raise ItemNotInStockError
 
         self.balance -= self.snacks[index].price
-        display_message(f"Bought {self.snacks[index].name}.")
+        display_message(f"Bought {self.snacks[index].name.strip()}.")
 
     def add_balance(self):
         """
