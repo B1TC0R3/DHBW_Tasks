@@ -1,4 +1,10 @@
+"""
+Contains the main functionality of the project.
+Includes error handling.
+"""
+
 import os
+import sys
 import json
 from snack import Snack
 from tui_engine import TuiEngine
@@ -48,7 +54,7 @@ class SnackMachine:
 
         :return:
         """
-        with open(f"{self.file_dir}/{self.file_snacks}", "r") as file:
+        with open(f"{self.file_dir}/{self.file_snacks}", "r", encoding="utf-8") as file:
             file_content = json.load(file)
 
             for snack in file_content:
@@ -118,10 +124,10 @@ class SnackMachine:
             os.mkdir(self.file_dir)
 
         if os.path.isfile(f"{self.file_dir}/{self.file_snacks}"):
-            with open(f"{self.file_dir}/{self.file_snacks}", "w") as file:
+            with open(f"{self.file_dir}/{self.file_snacks}", "w", encoding="utf-8") as file:
                 json.dump(json_snacks, file)
         else:
-            with open(f"{self.file_dir}/{self.file_snacks}", "x") as file:
+            with open(f"{self.file_dir}/{self.file_snacks}", "x", encoding="utf-8") as file:
                 json.dump(json_snacks, file)
 
     def run(self):
@@ -159,7 +165,7 @@ class SnackMachine:
         option = input("Input: ")
 
         if option == "q":
-            exit(0)
+            sys.exit(0)
 
         elif option == "r":
             self._restock()
