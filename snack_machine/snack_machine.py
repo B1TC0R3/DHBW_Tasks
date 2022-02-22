@@ -90,6 +90,7 @@ class SnackMachine:
         if os.path.isfile(f"{self.file_dir}/{self.file_snacks}"):
             os.system(f"rm {self.file_dir}/{self.file_snacks}")
 
+        self.snacks.clear()
         self._generate_snacks()
 
     def _snacks_to_json(self) -> list:
