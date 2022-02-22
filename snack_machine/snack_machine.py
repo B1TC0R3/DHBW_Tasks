@@ -189,7 +189,7 @@ class SnackMachine:
         os.system("clear")
 
         added_balance = float(input("Amount: ").replace("b", "").strip())
-        if balance < 0.01:
+        if added_balance < 0.0:
             raise ValueError
         self.balance += added_balance
 
@@ -203,8 +203,6 @@ class SnackMachine:
         title = "Snack Machine"
         infos = {"Balance": f"{self.balance:.2f}€",
                  "How to use        ": "",
-                 "Create new account": "Enter 'c'",
-                 "Login to account  ": "Enter 'l'",
                  "Add balance       ": "Enter 'b'",
                  "Buy an item       ": "Enter item id",
                  "Exit              ": "Enter 'q'"}
