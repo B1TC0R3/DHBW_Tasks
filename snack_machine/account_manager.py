@@ -62,7 +62,6 @@ def save_account(acc: Account):
     json_dict = acc.to_json()
 
     access = "w" if os.path.isfile(f"{_file_dir()}/{acc.get_name()}.json") else "x"
-    print(access)
     with open(f"{_file_dir()}/{acc.get_name()}.json", access, encoding="utf-8") as file:
         json.dump(json_dict, file)
 
