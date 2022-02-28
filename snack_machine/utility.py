@@ -2,8 +2,21 @@
 Contains multiple simple calculations
 and other functionality
 """
-
+import hashlib
 from exceptions import InvalidArgumentError
+
+
+def get_hash(pwd: str, salt: str) -> str:
+    """
+    Wrapper method for hashlib.
+    Calculates the hash from a string and a salt.
+
+    :param pwd: The passwor to be hashed
+    :param salt: The salt used to calculate the hash
+    :returns: str
+    """
+    pwd_hash = hashlib.pbkdf2_hmac("sha256", bytes(pwd, "utf-8"), bytes(salt, "utf-8"), 100000)
+    return pwd_hash.hex()
 
 
 def dict_line_length(element: dict) -> int:
@@ -49,3 +62,18 @@ def check_args(*args):
     for arg in args:
         if arg is None:
             raise InvalidArgumentError("A parameter was 'None'.")
+
+
+if __name__ == "__main__":
+    print("Running tests for 'utility.py'")
+
+    # get_hash
+    print("Testing 'get_hash':")
+    print("\tHashing 'qwertz'")
+    print(f"\tResult: {get_hash('qwertz', '12345')}")
+    print("\tRepeating hash")
+    print("\t->Result should be the same")
+    print(f"\tResult: {get_hash('qwertz', '12345')}")
+    print("\tTesting different salt")
+    print(f"\tResult: {get_hash('qwertz', '54321')}")
+    print("\n")

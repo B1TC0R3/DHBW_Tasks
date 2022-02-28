@@ -4,6 +4,7 @@ to easily create and log in to accounts.
 """
 import json
 import os
+from utility import get_hash
 from account import Account
 from exceptions import InvalidLoginError
 
@@ -15,7 +16,7 @@ def create_account() -> Account:
     """
     os.system("clear")
     acc_name = input("Enter account name:")
-    acc_pwd = input("Enter account pwd:")
+    acc_pwd = get_hash(input("Enter account pwd:"), acc_name)
 
     acc = Account(acc_name, acc_pwd)
     save_account(acc)
@@ -32,7 +33,7 @@ def login() -> Account:
     """
     os.system("clear")
     acc_name = input("Username:")
-    acc_pwd = input("Password:")
+    acc_pwd = get_hash(input("Password:"), acc_name)
 
     if not os.path.isfile(f"{_file_dir()}/{acc_name}.json"):
         raise InvalidLoginError
