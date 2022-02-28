@@ -1,6 +1,8 @@
 """
 Contains the class account.
 """
+from exceptions import BalanceToLowError
+
 
 class Account:
     """
@@ -23,6 +25,17 @@ class Account:
         else:
             raise ValueError()
 
+    def subtract_balance(self, balance: float):
+        """
+        Subtracts a certain ammount of money from the account.
+
+        :returns: None
+        """
+        if balance > self.balance:
+            raise BalanceToLowError
+
+        self.balance -= balance
+
     def get_name(self) -> str:
         """
         This returns the name of the account.
@@ -38,6 +51,14 @@ class Account:
         :returns: str
         """
         return self.pwd
+
+    def get_balance(self) -> float:
+        """
+        Returns the balance of the account.
+
+        :returns: float
+        """
+        return self.balance
 
     def to_json(self) -> dict:
         """
