@@ -15,8 +15,8 @@ def create_account() -> Account:
     :returns: Account
     """
     os.system("clear")
-    acc_name = input("Enter account name:")
-    acc_pwd = get_hash(input("Enter account pwd:"), acc_name)
+    acc_name = input("Enter account name:").strip()
+    acc_pwd = get_hash(input("Enter account pwd:"), acc_name).strip()
 
     acc = Account(acc_name, acc_pwd)
     save_account(acc)
@@ -32,8 +32,8 @@ def login() -> Account:
     :returns: Account
     """
     os.system("clear")
-    acc_name = input("Username:")
-    acc_pwd = get_hash(input("Password:"), acc_name)
+    acc_name = input("Username:").strip()
+    acc_pwd = get_hash(input("Password:"), acc_name).strip()
 
     if not os.path.isfile(f"{_file_dir()}/{acc_name}.json"):
         raise InvalidLoginError
