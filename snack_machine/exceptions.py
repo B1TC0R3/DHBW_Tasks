@@ -26,3 +26,8 @@ class InvalidArgumentError(Exception):
     """
     An error thrown when a method/function receives an invalid parameter
     """
+
+class InvalidLoginError(Exception):
+    """
+    An error thrown when a user tries to login with invalid user data
+    """
