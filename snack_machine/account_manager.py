@@ -18,11 +18,11 @@ def create_account() -> Account:
     acc_pwd = input("Enter account pwd:")
 
     acc = Account(acc_name, acc_pwd)
-    save(acc)
+    save_account(acc)
     return acc
 
 
-def login(name: str, pwd: str) -> Account:
+def login() -> Account:
     """
     Logs into an existing account.
 
@@ -30,20 +30,24 @@ def login(name: str, pwd: str) -> Account:
     :param pwd: The password of the account.
     :returns: Account
     """
-    if not os.path.isfile(f"{_file_dir()}/{name}.json"):
+    os.system("clear")
+    acc_name = input("Username:")
+    acc_pwd = input("Password:")
+
+    if not os.path.isfile(f"{_file_dir()}/{acc_name}.json"):
         raise InvalidLoginError
 
-    with open(f"{_file_dir()}/{name}.json", "r", encoding="utf-8") as file:
+    with open(f"{_file_dir()}/{acc_name}.json", "r", encoding="utf-8") as file:
         acc_dict = json.load(file)
 
-    if not pwd == acc_dict["pwd"]:
+    if not acc_pwd == acc_dict["pwd"]:
         raise InvalidLoginError
 
     acc = Account(acc_dict["name"], acc_dict["pwd"])
     acc.add_balance(float(acc_dict["balance"]))
     return acc
 
-def save(acc: Account):
+def save_account(acc: Account):
     """
     Saves an account to a json file.
     The directory is: "./.accounts/"
