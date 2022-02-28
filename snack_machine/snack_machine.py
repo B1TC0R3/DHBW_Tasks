@@ -9,6 +9,9 @@ import json
 from snack import Snack
 from account import Account
 from tui_engine import TuiEngine
+from account_manager import create_account,\
+                            login,\
+                            save_account
 from exceptions import InvalidInputError,\
                        BalanceToLowError,\
                        ItemNotInStockError,\
@@ -94,6 +97,11 @@ class SnackMachine:
         self._save()
 
     def _restock(self):
+        """
+        Restores all snack data to the default.
+
+        :returns: None
+        """
         if os.path.isfile(f"{self.file_dir}/{self.file_snacks}"):
             os.system(f"rm {self.file_dir}/{self.file_snacks}")
 
@@ -130,6 +138,8 @@ class SnackMachine:
         else:
             with open(f"{self.file_dir}/{self.file_snacks}", "x", encoding="utf-8") as file:
                 json.dump(json_snacks, file)
+
+        save_account(self.active_acc)
 
     def run(self):
         """
@@ -169,6 +179,12 @@ class SnackMachine:
 
         if option == "q":
             sys.exit(0)
+
+        elif option == "c":
+            self.active_acc = create_account()
+
+        elif option == "l":
+            self.active_acc = login()
 
         elif option == "r":
             self._restock()
