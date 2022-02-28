@@ -148,25 +148,25 @@ class SnackMachine:
 
         :return: None
         """
-        try:
-            while True:
+        while True:
+            try:
                 self.display()
                 self.handle_input()
                 self._save()
-        except TypeError:
-            display_message("There has been an error while trying to read a value.")
-        except ValueError:
-            display_message("Invalid Input.")
-        except IndexError:
-            display_message("Item not for sale.")
-        except InvalidInputError:
-            display_message("Invalid input.")
-        except BalanceToLowError:
-            display_message("You do not have enough money.")
-        except ItemNotInStockError:
-            display_message("This item is currently not in stock.")
-        except InvalidLoginError:
-            display_message("Something went wrong while trying to login.")
+            except TypeError:
+                display_message("There has been an error while trying to read a value.")
+            except ValueError:
+                display_message("Invalid Input.")
+            except IndexError:
+                display_message("Item not for sale.")
+            except InvalidInputError:
+                display_message("Invalid input.")
+            except BalanceToLowError:
+                display_message("You do not have enough money.")
+            except ItemNotInStockError:
+                display_message("This item is currently not in stock.")
+            except InvalidLoginError:
+                display_message("Something went wrong while trying to login.")
 
     def handle_input(self):
         """
