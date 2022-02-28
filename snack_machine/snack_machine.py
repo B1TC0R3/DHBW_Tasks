@@ -41,8 +41,7 @@ class SnackMachine:
 
         self.snacks = []
         self.engine = TuiEngine()
-
-        self.balance = balance
+        self.active_acc = Account("None", "")
 
         if os.path.isfile(f"{self.file_dir}/{self.file_snacks}"):
             self._load_snacks()
@@ -191,13 +190,10 @@ class SnackMachine:
         :param index: The index of the item to buy
         :return: None
         """
-        if self.snacks[index].price > self.balance:
-            raise BalanceToLowError()
-
         if not self.snacks[index].buy():
             raise ItemNotInStockError
 
-        self.balance -= self.snacks[index].price
+        self.active_acc.subtract_balance(self.snacks[index].price)
         display_message(f"Bought {self.snacks[index].name.strip()}.")
 
     def add_balance(self):
@@ -209,9 +205,7 @@ class SnackMachine:
         os.system("clear")
 
         added_balance = float(input("Amount: ").replace("b", "").strip())
-        if added_balance < 0.0:
-            raise ValueError
-        self.balance += added_balance
+        self.active_acc.add_balance(added_balance)
 
     def display(self):
         """
@@ -221,8 +215,11 @@ class SnackMachine:
         :return: None
         """
         title = "Snack Machine"
-        infos = {"Balance": f"{self.balance:.2f}€",
+        infos = {"Account": self.active_acc.get_name(),
+                 "Balance": f"{self.active_acc.get_balance():.2f}€",
                  "How to use        ": "",
+                 "Create acccount   ": "Enter 'c'",
+                 "Login to account  ": "Enter 'l'",
                  "Add balance       ": "Enter 'b'",
                  "Buy an item       ": "Enter item id",
                  "Restock Items     ": "Enter 'r'",
