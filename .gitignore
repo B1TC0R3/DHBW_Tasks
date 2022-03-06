@@ -3,4 +3,4 @@ __pycache__
 .idea
 save
 answers
-.elf
+*.elf
