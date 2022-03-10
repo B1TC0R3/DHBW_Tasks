@@ -132,12 +132,9 @@ class SnackMachine:
         if not os.path.isdir(self.file_dir):
             os.mkdir(self.file_dir)
 
-        if os.path.isfile(f"{self.file_dir}/{self.file_snacks}"):
-            with open(f"{self.file_dir}/{self.file_snacks}", "w", encoding="utf-8") as file:
-                json.dump(json_snacks, file)
-        else:
-            with open(f"{self.file_dir}/{self.file_snacks}", "x", encoding="utf-8") as file:
-                json.dump(json_snacks, file)
+        access = "w" if os.path.isfile(f"{self.file_dir}/{self.file_snacks}") else "x"
+        with open(f"{self.file_dir}/{self.file_snacks}", access, encoding="utf-8") as file:
+            json.dump(json_snacks, file)
 
         save_account(self.active_acc)
 
