@@ -7,11 +7,6 @@ struct student {
 	char* email;	
 };
 
-struct group {
-	int size;
-	struct student students[];
-};
-
 int countLines(char* filePath) {
 	FILE* file = fopen(filePath, "r");
 	int lines = 0;
@@ -49,6 +44,19 @@ void loadStudents(struct student* students, char* filePath, int buffer) {
 	fclose(file);
 }
 
+void generateGroups(struct student students[], int buffer, int groupSize) {
+	int overflow = buffer % groupSize;
+	int groupCount = (buffer-overflow)/groupSize;
+	
+	int currentSize;
+	for (int i = 0; i < groupCount; i++) {
+		currentSize = (overflow > 0) ? groupSize+1 : groupSize;
+		overflow--;
+		printf("Group %i has %i members\n", i, currentSize);
+	}
+
+}
+
 int main(int argc, char** argv) {
 	if (argc != 3) {
 		printf("\033[31mInvalid parameters!\033[0m\n");
@@ -68,6 +76,8 @@ int main(int argc, char** argv) {
 	for (int i = 0; i < lineCount; i++) {
 		printf("%i)\tName: %s\tEmail: %s", i+1, students[i].name, students[i].email);
 	}
+
+	generateGroups(students, lineCount, groupSize);
 
 	return 0;
 }
