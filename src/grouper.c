@@ -1,10 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
+#include <time.h>
 
 struct student {
 	char* name;
 	char* email;	
+	bool hasGroup;
 };
 
 int countLines(char* filePath) {
@@ -37,7 +40,7 @@ void loadStudents(struct student* students, char* filePath, int buffer) {
 		char* name = malloc(strlen(currentName));
 		strcpy(name, currentName);
 
-		students[lineCounter] = (struct student){name, email}; 
+		students[lineCounter] = (struct student){name, email, false}; 
 		lineCounter++;
 	}
 
@@ -47,12 +50,42 @@ void loadStudents(struct student* students, char* filePath, int buffer) {
 void generateGroups(struct student students[], int buffer, int groupSize) {
 	int overflow = buffer % groupSize;
 	int groupCount = (buffer-overflow)/groupSize;
-	
 	int currentSize;
+
+	srand(time(NULL));
+
 	for (int i = 0; i < groupCount; i++) {
-		currentSize = (overflow > 0) ? groupSize+1 : groupSize;
+		currentSize = (overflow > 0) ? 
+			groupSize+1 : 
+			groupSize;
 		overflow--;
 		printf("Group %i has %i members\n", i, currentSize);
+
+		for (int j = 0; j < currentSize; j++) {
+			int studentIndex = rand() % buffer;
+			
+			while(students[studentIndex].hasGroup) {
+				int direction = rand() % 2;
+				studentIndex = (direction == 1) ? 
+					studentIndex-1: 
+					studentIndex+1;
+
+				if (studentIndex < 0) {
+					studentIndex = buffer-1;
+				
+				} 
+				else if (studentIndex >= buffer) {
+					studentIndex = 0;
+
+				}
+			}
+
+			printf(" - %s, Email: %s", students[studentIndex].name, students[studentIndex].email);
+			students[studentIndex].hasGroup = true;
+
+		}
+		puts("");
+
 	}
 
 }
@@ -76,6 +109,7 @@ int main(int argc, char** argv) {
 	for (int i = 0; i < lineCount; i++) {
 		printf("%i)\tName: %s\tEmail: %s", i+1, students[i].name, students[i].email);
 	}
+	puts("");
 
 	generateGroups(students, lineCount, groupSize);
 
