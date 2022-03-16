@@ -30,7 +30,17 @@ void loadStudents(struct student* students, char* filePath, int buffer) {
 
 	int lineCounter = 0;
 	while(fgets(line, maxLineLength, file) != NULL) {
-		students[lineCounter] = (struct student){"-NONE-", line}; 
+		char* email = malloc(
+			      strlen(line));
+		strcpy(email, line);
+
+		char* currentName = strtok(line, "@");
+		char* name = malloc(
+			     strlen(currentName));
+		strcpy(name, currentName);
+
+		students[lineCounter] = (struct student){name, email}; 
+
 		lineCounter++;
 	}
 
