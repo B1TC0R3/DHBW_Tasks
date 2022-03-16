@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 struct student{
 	char* name;
@@ -24,11 +25,11 @@ int countLines(char* filePath) {
 
 void loadStudents(struct student* students, char* filePath, int buffer) {
 	FILE* file = fopen(filePath, "r");
-	char* line;
 	int maxLineLength = 255;
+	char line[maxLineLength];
 
 	int lineCounter = 0;
-	while(fgets(line, maxLineLength, file)) {
+	while(fgets(line, maxLineLength, file) != NULL) {
 		students[lineCounter] = (struct student){"-NONE-", line}; 
 		lineCounter++;
 	}
@@ -48,6 +49,13 @@ int main(int argc, char** argv) {
 	
 	int lineCount = countLines(filePath);
 	printf("Students found in file: \033[32m%i\033[0m\n", lineCount);
+
+	struct student students[lineCount];
+	loadStudents(students, filePath, lineCount);
+
+	for (int i = 0; i < lineCount; i++) {
+		printf("%i)\tName: %s\tEmail: %s", i, students[i].name, students[i].email);
+	}
 
 	return 0;
 }
