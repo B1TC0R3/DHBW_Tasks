@@ -54,7 +54,7 @@ int main(int argc, char** argv) {
 	loadStudents(students, filePath, lineCount);
 
 	for (int i = 0; i < lineCount; i++) {
-		printf("%i)\tName: %s\tEmail: %s", i, students[i].name, students[i].email);
+		printf("%i)\tName: %s\tEmail: %s", i+1, students[i].name, students[i].email);
 	}
 
 	return 0;
