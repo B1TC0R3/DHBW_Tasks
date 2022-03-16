@@ -2,9 +2,14 @@
 #include <stdlib.h>
 #include <string.h>
 
-struct student{
+struct student {
 	char* name;
 	char* email;	
+};
+
+struct group {
+	int size;
+	struct student students[];
 };
 
 int countLines(char* filePath) {
@@ -30,17 +35,14 @@ void loadStudents(struct student* students, char* filePath, int buffer) {
 
 	int lineCounter = 0;
 	while(fgets(line, maxLineLength, file) != NULL) {
-		char* email = malloc(
-			      strlen(line));
+		char* email = malloc(strlen(line));
 		strcpy(email, line);
 
 		char* currentName = strtok(line, "@");
-		char* name = malloc(
-			     strlen(currentName));
+		char* name = malloc(strlen(currentName));
 		strcpy(name, currentName);
 
 		students[lineCounter] = (struct student){name, email}; 
-
 		lineCounter++;
 	}
 
