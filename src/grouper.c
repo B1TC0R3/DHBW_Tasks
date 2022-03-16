@@ -47,7 +47,7 @@ int main(int argc, char** argv) {
 	int groupSize = atoi(argv[2]);
 	
 	int lineCount = countLines(filePath);
-	printf("Students found in file: \033[34m%i\033[0m\n", lineCount);
+	printf("Students found in file: \033[32m%i\033[0m\n", lineCount);
 
 	return 0;
 }
