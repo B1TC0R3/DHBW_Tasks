@@ -17,7 +17,8 @@ int countLines(char* filePath) {
 			lines++;
 		}
 	} 
-
+	
+	fclose(file);
 	return lines;
 }
 
@@ -28,11 +29,11 @@ int main(int argc, char** argv) {
 		return -1;
 	}
 	
-	char* filePath = argv[0];
-	int groupSize = atoi(argv[1]);
+	char* filePath = argv[1];
+	int groupSize = atoi(argv[2]);
 	
-	int lineSize = countLines(filePath);
-	printf("Students found in file: %i\n", lineSize);
+	int lineCount = countLines(filePath);
+	printf("Students found in file: %i\n", lineCount);
 
 	return 0;
 }
