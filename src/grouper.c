@@ -22,6 +22,20 @@ int countLines(char* filePath) {
 	return lines;
 }
 
+void loadStudents(struct student* students, char* filePath, int buffer) {
+	FILE* file = fopen(filePath, "r");
+	char* line;
+	int maxLineLength = 255;
+
+	int lineCounter = 0;
+	while(fgets(line, maxLineLength, file)) {
+		students[lineCounter] = (struct student){"-NONE-", line}; 
+		lineCounter++;
+	}
+
+	fclose(file);
+}
+
 int main(int argc, char** argv) {
 	if (argc != 3) {
 		printf("\033[31mInvalid parameters!\033[0m\n");
@@ -33,7 +47,7 @@ int main(int argc, char** argv) {
 	int groupSize = atoi(argv[2]);
 	
 	int lineCount = countLines(filePath);
-	printf("Students found in file: %i\n", lineCount);
+	printf("Students found in file: \033[34m%i\033[0m\n", lineCount);
 
 	return 0;
 }
