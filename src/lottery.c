@@ -47,8 +47,7 @@ void bubble_sort(int list[], int buffer) {
         while(isShift) {
                 isShift = false;
 
-                for (int i = 0; i < buffer; i++) {
-                        if (i == 0) continue;
+                for (int i = 1; i < buffer; i++) {
                         prev_value = list[i-1];
 
                         if (list[i] < prev_value) {
