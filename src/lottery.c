@@ -63,7 +63,7 @@ void bubble_sort(int list[], int buffer) {
 
 }
 
-void crprintf(int numbers[], int buffer) {
+void crprintf(int numbers[]) {
         printf("\nRESULT:\n\n\033[32m%i\t%i\t%i\n\n%i\t%i\t%i\033[0m\n\n",
               numbers[0],
               numbers[1],
@@ -81,6 +81,6 @@ int main(int argc, const char** argv) {
 
         bubble_sort(numbers, DRAW_SIZE);
 
-        crprintf(numbers, DRAW_SIZE);
+        crprintf(numbers);
 
 }
