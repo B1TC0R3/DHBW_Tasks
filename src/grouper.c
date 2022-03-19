@@ -44,7 +44,15 @@ int countLines(char* filePath) {
 	return lines;
 }
 
-void loadStudents(struct student* students, char* filePath, int buffer) {
+void loadStudents(struct student* students, char* filePath) {
+	/*
+	 * Loads the list of participants from a file.
+	 *
+	 * :param students: The content of the file will be writen to this.
+	 * :param filePath: The file that is to be read.
+	 *
+	 * :returns: void
+	 * */
 	FILE* file = fopen(filePath, "r");
 	int maxLineLength = 255;
 	char line[maxLineLength];
@@ -66,6 +74,13 @@ void loadStudents(struct student* students, char* filePath, int buffer) {
 }
 
 void scrambleStudentList(struct student students[], int buffer, int iterations) {
+	/*
+	 *  Randomly switches the elements of an array a set amount of times.
+	 *
+	 *  :param students:   The array to be scrambeled.
+	 *  :param buffer:     The size of the array.
+	 *  :param iterations: The amount of times elements of the array are switched.
+	 * */
 	int firstIndex; 
 	int secondIndex;
 
@@ -84,6 +99,16 @@ void scrambleStudentList(struct student students[], int buffer, int iterations) 
 }
 
 void generateSingleGroup(struct student students[], int buffer, int groupSize, int offset) {
+	/*
+	 * Creates a single group with a set amount of members.
+	 *
+	 * :param students:  An array of all participants of all groups.
+	 * :param buffer:    The amount of participants.
+	 * :param groupSize: The size of the group.
+	 * :param offet:     Starting point on the array of students.
+	 *
+	 * :returns: void
+	 * */
 	for (int i = 0; i < groupSize; i++) {
 		cprintf(outputFile, " - %s, Email: %s", students[offset+i].name, students[offset+i].email);
 
@@ -92,6 +117,19 @@ void generateSingleGroup(struct student students[], int buffer, int groupSize, i
 }
 
 void generateGroups(struct student students[], int buffer, int groupSize) {
+	/*
+	 * Creates a dynamic amount of groups based on 
+	 * the amount of participants and group size.
+	 * Also calculates the how many groups need to have one
+	 * more member if the amount of participants can't be divided 
+	 * by the group size.
+	 *
+	 * :param students:  An array of all participtans who are to be put into groups.
+	 * :param buffer:    The amount of participants.
+	 * :param groupSize: The size of each group.
+	 *
+	 * :returns: void
+	 * */
 	int overflow = buffer % groupSize;
 	int groupCount = (buffer-overflow)/groupSize;
 	int offset = 0;
@@ -112,6 +150,16 @@ void generateGroups(struct student students[], int buffer, int groupSize) {
 }
 
 int main(int argc, char** argv) {
+	/*
+	 * This method runs the key components of the application
+	 *
+	 * :param argc: Amount of console parameters parsed to the 
+	 *              application.
+	 * :param argv: All console paramters paresed to th
+	 * 		application.
+	 *
+	 * :returns: The exit status of the application
+	 * */
 	if (argc != 3) {
 		printf("\033[31mInvalid parameters!\033[0m\n");
 		printf("Found %i, needed 2.\n", argc);
@@ -126,7 +174,7 @@ int main(int argc, char** argv) {
 	printf("Students found in file: \033[32m%i\033[0m\n", lineCount);
 
 	struct student students[lineCount];
-	loadStudents(students, filePath, lineCount);
+	loadStudents(students, filePath);
 	generateGroups(students, lineCount, groupSize);
 
 	fclose(outputFile);
