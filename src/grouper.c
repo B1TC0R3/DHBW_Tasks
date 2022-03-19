@@ -3,9 +3,12 @@
 #include <string.h>
 #include <stdbool.h>
 #include <time.h>
+#include <stdarg.h>
 
 #define SCRAMBLE_ITERATIONS 1000
-#define DEFAULT_OUTPUT      "./groups.json"
+
+FILE* outputFile;
+const char* outputPath = "./groups.txt";
 
 struct student {
 	char* name;
@@ -15,8 +18,13 @@ struct student {
 void cprintf(FILE* file, const char* format, ...) {
 	va_list params;
 	
-	printf(format, params);
-	fprintf(file, format, params);
+	va_start(params, format);
+	vprintf(format, params);
+	va_end(params);
+
+	va_start(params, format);
+	vfprintf(file, format, params);
+	va_end(params);
 
 }
 
@@ -77,10 +85,10 @@ void scrambleStudentList(struct student students[], int buffer, int iterations) 
 
 void generateSingleGroup(struct student students[], int buffer, int groupSize, int offset) {
 	for (int i = 0; i < groupSize; i++) {
-		printf(" - %s, Email: %s", students[offset+i].name, students[offset+i].email);
+		cprintf(outputFile, " - %s, Email: %s", students[offset+i].name, students[offset+i].email);
 
 	}
-	puts("");
+	cprintf(outputFile, "\n");
 }
 
 void generateGroups(struct student students[], int buffer, int groupSize) {
@@ -95,7 +103,7 @@ void generateGroups(struct student students[], int buffer, int groupSize) {
 			groupSize+1 : 
 			groupSize;
 		overflow--;
-		printf("Group %i has %i members\n", i+1, currentSize);
+		cprintf(outputFile, "Group %i has %i members\n", i+1, currentSize);
 		generateSingleGroup(students, buffer, groupSize, offset);		
 		offset += currentSize;
 
@@ -112,7 +120,7 @@ int main(int argc, char** argv) {
 	
 	char* filePath = argv[1];
 	int groupSize = atoi(argv[2]);
-	FILE* file = fopen("groups.json", "w");
+	outputFile = fopen(outputPath, "w");
 
 	int lineCount = countLines(filePath);
 	printf("Students found in file: \033[32m%i\033[0m\n", lineCount);
@@ -121,6 +129,6 @@ int main(int argc, char** argv) {
 	loadStudents(students, filePath, lineCount);
 	generateGroups(students, lineCount, groupSize);
 
-	fclose(file);
+	fclose(outputFile);
 	return 0;
 }
