@@ -4,11 +4,11 @@
 #include <stdbool.h>
 #include <time.h>
 #include <stdarg.h>
+#include <unistd.h>
 
 #define SCRAMBLE_ITERATIONS 1000
 
 FILE* outputFile;
-const char* outputPath = "./groups.txt";
 
 struct student {
 	/*
@@ -159,6 +159,7 @@ void generateGroups(struct student students[], int buffer, int groupSize) {
 		int currentSize = (overflow > 0) ? 
 			groupSize+1 : 
 			groupSize;
+
 		overflow--;
 		cprintf(outputFile, "Group %i has %i members\n", i+1, currentSize);
 		generateSingleGroup(students, buffer, groupSize, offset);		
@@ -166,6 +167,18 @@ void generateGroups(struct student students[], int buffer, int groupSize) {
 
 	}
 
+}
+
+void printHelp() {
+	puts("Grouper (1)\n");
+	printf("\033[32mNAME\033[0m\n\tgrouper - create random groups from a list of email addresses\n\n"); 
+	printf("\033[32mSYNPOSIS\033[0m\n\t\033[32m./grouper\033[0m [\033[36mOPTION\033[0m]...\n\n");
+	printf("\033[32mDESCRIPTION\033[0m\n\tCreate a group from a list of emails read in from a file\n");
+	printf("\tWill output into a file and to the console at the same time\n\n");
+	printf("\t\033[32m-i\033[0m\n\t\tPath to the input file\n\t\tThis is a required parameter\n\n");
+	printf("\t\033[32m-s\033[0m\n\t\tSets the group size\n\t\tDefaults to \033[32m5\033[0m\n\n");
+	printf("\t\033[32m-o\033[0m\n\t\tSets the output file\n\t\tThis is a required parameter\n\n");
+	printf("\t\033[32m-h\033[0m\n\t\tPrint help about the command\n\n");
 }
 
 int main(int argc, char** argv) {
@@ -179,23 +192,44 @@ int main(int argc, char** argv) {
 	 *
 	 * :returns: The exit status of the application
 	 * */
-	if (argc != 3) {
-		printf("\033[31mInvalid parameters!\033[0m\n");
-		printf("Found %i, needed 2.\n", argc);
-		return -1;
+	int option = -1;
+	int groupSize = 5;
+	char* inputPath = malloc(255);
+	char* outputPath = malloc(255);
+
+	while ((option = getopt(argc, argv, "i:s:o:h")) != -1) {
+		switch(option) {
+			case 'i':
+				strcpy(inputPath, optarg);		
+				break;
+			case 's':
+				groupSize = atoi(optarg);
+				break;
+			case 'o':
+				strcpy(outputPath, optarg);
+				break;
+			case 'h':
+			case '?':	
+			default:
+				printHelp();
+				return -1;
+				break;
+		}
+			
 	}
 	
-	char* filePath = argv[1];
-	int groupSize = atoi(argv[2]);
 	outputFile = fopen(outputPath, "w");
 
-	int lineCount = countLines(filePath);
+	int lineCount = countLines(inputPath);
 	printf("Students found in file: \033[32m%i\033[0m\n", lineCount);
 
 	struct student students[lineCount];
-	loadStudents(students, filePath);
+	loadStudents(students, inputPath);
 	generateGroups(students, lineCount, groupSize);
 
 	fclose(outputFile);
+	free(inputPath);
+	free(outputPath);
 	return 0;
+
 }
