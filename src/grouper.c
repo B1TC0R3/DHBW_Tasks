@@ -4,10 +4,11 @@
 #include <stdbool.h>
 #include <time.h>
 
+#define SCRAMBLE_ITERATIONS 1000
+
 struct student {
 	char* name;
 	char* email;	
-	bool hasGroup;
 };
 
 int countLines(char* filePath) {
@@ -40,35 +41,34 @@ void loadStudents(struct student* students, char* filePath, int buffer) {
 		char* name = malloc(strlen(currentName));
 		strcpy(name, currentName);
 
-		students[lineCounter] = (struct student){name, email, false}; 
+		students[lineCounter] = (struct student){name, email}; 
 		lineCounter++;
 	}
 
 	fclose(file);
 }
 
-void generateSingleGroup(struct student students[], int buffer, int groupSize) {
-	for (int j = 0; j < groupSize; j++) {
-		int studentIndex = rand() % buffer;
-			
-		while(students[studentIndex].hasGroup) {
-			int direction = rand() % 2;
-			studentIndex = (direction == 1) ? 
-				studentIndex-1: 
-				studentIndex+1;
+void scrambleStudentList(struct student students[], int buffer, int iterations) {
+	int firstIndex; 
+	int secondIndex;
 
-			if (studentIndex < 0) {
-				studentIndex = buffer-1;
-				
-			} 
-			else if (studentIndex >= buffer) {
-				studentIndex = 0;
+	struct student tmp;
 
-			}
-		}
+	srand(time(NULL));
+	for (int i = 0; i < iterations; i++) {
+		firstIndex = rand() % buffer;
+		secondIndex = rand() % buffer;
 
-		printf(" - %s, Email: %s", students[studentIndex].name, students[studentIndex].email);
-		students[studentIndex].hasGroup = true;
+		tmp = students[firstIndex];
+		students[firstIndex] = students[secondIndex];
+		students[secondIndex] = tmp;
+	}
+
+}
+
+void generateSingleGroup(struct student students[], int buffer, int groupSize, int offset) {
+	for (int i = 0; i < groupSize; i++) {
+		printf(" - %s, Email: %s", students[offset+i].name, students[offset+i].email);
 
 	}
 	puts("");
@@ -77,8 +77,9 @@ void generateSingleGroup(struct student students[], int buffer, int groupSize) {
 void generateGroups(struct student students[], int buffer, int groupSize) {
 	int overflow = buffer % groupSize;
 	int groupCount = (buffer-overflow)/groupSize;
+	int offset = 0;
 
-	srand(time(NULL));
+	scrambleStudentList(students, buffer, SCRAMBLE_ITERATIONS);
 
 	for (int i = 0; i < groupCount; i++) {
 		int currentSize = (overflow > 0) ? 
@@ -86,7 +87,8 @@ void generateGroups(struct student students[], int buffer, int groupSize) {
 			groupSize;
 		overflow--;
 		printf("Group %i has %i members\n", i+1, currentSize);
-		generateSingleGroup(students, buffer, groupSize);		
+		generateSingleGroup(students, buffer, groupSize, offset);		
+		offset += currentSize;
 
 	}
 
