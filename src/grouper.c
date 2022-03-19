@@ -5,11 +5,20 @@
 #include <time.h>
 
 #define SCRAMBLE_ITERATIONS 1000
+#define DEFAULT_OUTPUT      "./groups.json"
 
 struct student {
 	char* name;
 	char* email;	
 };
+
+void cprintf(FILE* file, const char* format, ...) {
+	va_list params;
+	
+	printf(format, params);
+	fprintf(file, format, params);
+
+}
 
 int countLines(char* filePath) {
 	FILE* file = fopen(filePath, "r");
@@ -103,7 +112,8 @@ int main(int argc, char** argv) {
 	
 	char* filePath = argv[1];
 	int groupSize = atoi(argv[2]);
-	
+	FILE* file = fopen("groups.json", "w");
+
 	int lineCount = countLines(filePath);
 	printf("Students found in file: \033[32m%i\033[0m\n", lineCount);
 
@@ -111,5 +121,6 @@ int main(int argc, char** argv) {
 	loadStudents(students, filePath, lineCount);
 	generateGroups(students, lineCount, groupSize);
 
+	fclose(file);
 	return 0;
 }
