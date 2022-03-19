@@ -11,11 +11,23 @@ FILE* outputFile;
 const char* outputPath = "./groups.txt";
 
 struct student {
+	/*
+	 * Represents a single student.
+	 * */
 	char* name;
 	char* email;	
 };
 
 void cprintf(FILE* file, const char* format, ...) {
+	/*
+	 * Prints to the console and a file at the same time.
+	 *
+	 * :param file:   The file that is to be written to.
+	 * :param format: The format that the remaining parameters are to be printed in.
+	 * :param ...:    The values that are to be inserted into the format.
+	 *
+	 * :returns: void
+	 * */
 	va_list params;
 	
 	va_start(params, format);
@@ -29,6 +41,13 @@ void cprintf(FILE* file, const char* format, ...) {
 }
 
 int countLines(char* filePath) {
+	/*
+	 * Counts the lines of a file.
+	 *
+	 * :param filePath: The path to the file whichs lines will be counted.
+	 *
+	 * :returns: int | The amount of lines in the file.
+	 * */
 	FILE* file = fopen(filePath, "r");
 	int lines = 0;
 	char ch;
