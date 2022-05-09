@@ -54,7 +54,6 @@ char morse_to_char(char* morse) {
 		morse++;
 		result = tree[index];
 	}
-	printf("Reached depth: %i / index: %i, block: %i\n", depth, index, block);
 	return result;
 }
 
