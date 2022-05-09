@@ -2,7 +2,12 @@
 
 #include <stdio.h>
 
-// TODO Forgot value on level 5
+//This file contains a binary tree used to translate morse code to chars.
+//The tree is stored in an array and i go through it iteratively while keeping the waya binary tree works for 
+//optimal performance.
+
+//I wanted to include numbers as well so i extended the tree accordingly.
+//The few special symbols that are still included in this range i have added as well, but anything on the next depth of the tree (e.g. '_') are not translatable.
 
 //            DEPTH:   0    1         2                   3                                       4
 //            KNOT :   0    1    2    3    4    5    6    7    8    9   10   11    12  13   14   15   16   17   18   19   20   21   22   23   24   25   26   27   28   29   30
@@ -11,7 +16,7 @@ const char tree[] =  {'-', 'E', 'T', 'I', 'A', 'N', 'M', 'S', 'U', 'R', 'W', 'D'
 //             DEPTH:  5
 //             KNOT : 31   32   33   34   35   36   37   38   39   40   41   42   43   44   45   46   47   48   49   50   51   52   53   54   55   56   57   58   59   60
 //             CHAR :  .    -    .    -    .    -    .    -    .    -    .    -    .    -    .    -    .    -    .    -    .    -    .    -    .    -    .    -    .    -
-	              '5', '4', '-', '3', 'E', '-', '-', '2', '&', 'E', '-', '-', '-', 'A', '-', '1', '6', '-', '/', '-', '-', '-', '(', '-', '7', '-', '-', '-', '8', '-',
+	              '5', '4', '-', '3', 'E', '-', '-', '2', '&', 'E', '-', '-', '-', 'A', '-', '1', '6', '-', '/', '-', '-', '-', '(', '-', '7', '-', '-', 'N', '8', '-',
 //             DEPTH:
 //             KNOT : 61   62
 //             CHAR :  .    -
